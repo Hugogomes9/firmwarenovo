@@ -80,7 +80,7 @@ pb_istream_t pb_istream_from_circularbuffer(CircularBuffer<uint8_t> *circularbuf
 
 int main(void){
 	LIS3DSH_CSN.Set();
-
+	//robo.drible->Set_Vel(0); não da certo
 	SysTick_Config(SystemCoreClock/1000);
 	usb.Init();
 	robo.init();
@@ -111,14 +111,16 @@ int main(void){
 		resp_mpu++;
 
 	while(1){
+		//robo.drible->Set_Vel(0);
 		//TIM_SetCompare4(TIM8,500);
-		if(GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_11))
+		if(GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_11)){
 			led_c.On();
+			//robo.drible->Set_Vel(0);
+		}
 		else
 			led_c.Off();
 		robo._nrf24->InterruptCallback();
 		usb_device_class_cdc_vcp.GetData(_usbserialbuffer, 1024);
-
 		CT.Set();
 
 		if(GetLocalTime() - last_charge_en > 6000){

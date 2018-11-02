@@ -1,6 +1,5 @@
 #include <stm32f4xx_gpio.h>
 #include <stm32f4xx_usart.h>
-
 #include <radio/bsp.h>
 #include <radio/serialnumber.h>
 #include <hal_stm32/interrupt_stm32.h>
@@ -9,7 +8,6 @@
 #include <control/Robo.h>
 #include <control/Switch.h>
 #include "TimerTime.h"
-
 extern "C"{
 	#include "usb_dcd_int.h"
 	#include "usb_hcd_int.h"
@@ -46,7 +44,7 @@ NRF24L01P nrf24(spi_nrf, NRF24_SS_PIN, NRF24_CE_PIN, NRF24_IRQN_PIN);
 
 IO_Pin_STM32 SPI2_SCK_PIN(IO_Pin::IO_Pin_Mode_SPECIAL, GPIOB, GPIO_Pin_13, GPIO_PuPd_NOPULL, GPIO_OType_PP, GPIO_AF_SPI2);//ok
 IO_Pin_STM32 SPI2_MISO_PIN(IO_Pin::IO_Pin_Mode_SPECIAL, GPIOB, GPIO_Pin_14, GPIO_PuPd_NOPULL, GPIO_OType_PP, GPIO_AF_SPI2);//ok
-IO_Pin_STM32 SPI2_MOSI_PIN(IO_Pin::IO_Pin_Mode_SPECIAL, GPIOB, GPIO_Pin_15, GPIO_PuPd_NOPULL, GPIO_OType_PP, GPIO_AF_SPI2);//ok
+IO_Pin_STM32 SPI2_MOSI_PIN(IO_Pin::IO_Pin_Mode_SPECIAL, /*GPIOB*/GPIOE, /*GPIO_Pin_15*/GPIO_Pin_5, GPIO_PuPd_NOPULL, GPIO_OType_PP, GPIO_AF_SPI2);//ok
 IO_Pin_STM32 SDCARD_SS_PIN(IO_Pin::IO_Pin_Mode_OUT, GPIOD, GPIO_Pin_3, GPIO_PuPd_UP, GPIO_OType_PP);//ok
 IO_Pin_STM32 MPU9250_SS_PIN(IO_Pin::IO_Pin_Mode_OUT, GPIOC, GPIO_Pin_10, GPIO_PuPd_UP, GPIO_OType_PP);//ok
 
@@ -93,7 +91,7 @@ Motor motor3(&ahpwm3, &algpio3, &bhpwm3, &blgpio3, &encoder3, &robo_timer);
 adc sensorAdc; //adc ainda não implementado.
 
 uint8_t ID = 0;
-
+//uint8_t ID = ID_Button.Read();
 Robo robo(&motor0, &motor1, &motor2, &motor3, &nrf24, ID, &sensorAdc, false);
 
 INTERRUPT_STM32 timer_robot(TIM6_DAC_IRQn, 0x0C, 0x0C, ENABLE);
